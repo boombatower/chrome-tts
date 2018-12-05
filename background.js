@@ -18,14 +18,19 @@ function selectionRead()
     code: 'window.getSelection().toString();'
   }, function(result) {
     if (result) {
-      textRead(result[0]);
+      chrome.storage.sync.get({
+        voice: null,
+        rate: 1
+      }, function(items) {
+        textRead(result[0], items.voice, items.rate);
+      });
     } else {
       console.log('no selection to read');
     }
   });
 }
 
-function textRead(text)
+function textRead(text, voice, rate)
 {
   var start = 0;
   var end;
@@ -36,7 +41,7 @@ function textRead(text)
     start = end;
 
     console.log(substring);
-    chrome.tts.speak(substring, {'rate': 1.5, enqueue: true, onEvent: ttsEvent});
+    chrome.tts.speak(substring, {voiceName: voice, 'rate': rate, enqueue: true, onEvent: ttsEvent});
   }
   while (start < text.length);
 }
