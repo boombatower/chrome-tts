@@ -17,7 +17,7 @@ function selectionRead()
   chrome.tabs.executeScript({
     code: 'window.getSelection().toString();'
   }, function(result) {
-    if (result) {
+    if (result[0]) {
       chrome.storage.sync.get({
         voice: null,
         rate: 1
